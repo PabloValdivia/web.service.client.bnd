@@ -8,12 +8,7 @@ import javax.xml.ws.BindingProvider;
 import javax.xml.ws.WebServiceFeature;
 import javax.xml.ws.soap.AddressingFeature;
 
-import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.frontend.ClientProxy;
-import org.apache.cxf.jaxws.JaxWsProxyFactoryBean;
 import org.apache.cxf.jaxws.spi.ProviderImpl;
-import org.apache.cxf.transport.http.HTTPConduit;
-import org.apache.cxf.transports.http.configuration.HTTPClientPolicy;
 import org.apache.felix.service.command.annotations.GogoCommand;
 import org.datacontract.schemas._2004._07.dianresponse.DianResponse;
 import org.osgi.service.component.annotations.Component;
