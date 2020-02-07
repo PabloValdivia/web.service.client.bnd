@@ -1,0 +1,4 @@
+javac.source:           11
+javac.target:           11
+javac.compliance:       11
+javac.debug:            on

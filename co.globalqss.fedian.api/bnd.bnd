@@ -1,0 +1,6 @@
+#
+# co.globalqss.fedian.api
+#
+
+-buildpath:  \
+	osgi.annotation

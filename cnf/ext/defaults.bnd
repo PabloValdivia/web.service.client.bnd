@@ -1,0 +1,62 @@
+-plugin.10.build: \
+    aQute.bnd.repository.maven.provider.MavenBndRepository; \
+        snapshotUrl="https://oss.sonatype.org/content/repositories/snapshots/"; \
+        releaseUrl=https://repo.maven.apache.org/maven2/; \
+        index=${.}/build.mvn; \
+        readOnly=true; \
+        name="Build"
+
+-plugin.20.runtime: \
+    aQute.bnd.repository.maven.provider.MavenBndRepository; \
+        snapshotUrl="https://oss.sonatype.org/content/repositories/snapshots/"; \
+        releaseUrl="https://repo.maven.apache.org/maven2/"; \
+        index=${.}/runtime.mvn; \
+        readOnly=true; \
+        name="Runtime"
+		
+-plugin.30.MavenToP2: \
+	aQute.bnd.repository.p2.provider.P2Repository; \
+    	name = "Maven to p2"; \
+    	url = "file:/mnt/data/1Dev/project/vn.hsv.git.build/idempiere/org.idempiere.maven.to.p2/org.idempiere.webservice.client/target/repository/"
+
+-plugin.31.Orbit_R20181128170323: \
+	aQute.bnd.repository.p2.provider.P2Repository; \
+    	name = "Orbit"; \
+    	url = "http://download.eclipse.org/tools/orbit/downloads/drops/R20181128170323/repository"
+    	
+-plugin.40.cxf: \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		snapshotUrls=https://oss.sonatype.org/content/repositories/osgi/; \
+		releaseUrls=https://repo.maven.apache.org/maven2/; \
+		query="q=g:%22org.apache.cxf%22+AND+v:%223.3.1%22"; \
+		readOnly=true; \
+		name="cfx"
+
+-plugin.41.Jakarta: \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		snapshotUrls=https://oss.sonatype.org/content/repositories/osgi/; \
+		releaseUrls=https://repo.maven.apache.org/maven2/; \
+		pom=${.}/local.jakarta.pom; \
+		readOnly=true; \
+		name="Jakarta"
+
+-runblacklist.enroute: \
+    osgi.identity;filter:='(osgi.identity=osgi.enroute.base.api)', \
+    osgi.identity;filter:='(osgi.identity=osgi.cmpn)', \
+    osgi.identity;filter:='(osgi.identity=osgi.core)', \
+    osgi.identity;filter:='(osgi.identity=biz.aQute.junit)', \
+    osgi.identity;filter:='(osgi.identity=biz.aQute.launcher)', \
+    osgi.identity;filter:='(osgi.identity=biz.aQute.remote.launcher)', \
+    osgi.identity;filter:='(osgi.identity=org.osgi.service.*)', \
+    osgi.identity;filter:='(osgi.identity=slf4j.*)', \
+
+
+-runsystemcapabilities.dflt:    ${native_capability}
+
+debug-bundles: \
+    osgi.identity;filter:='(osgi.identity=osgi.enroute.webconsole.xray.provider)',\
+    osgi.implementation;filter:='(osgi.implementation=osgi.metatype)',\
+    osgi.implementation;filter:='(osgi.implementation=osgi.event)',\
+    osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.command)',\
+    osgi.identity;filter:='(osgi.identity=org.apache.felix.gogo.shell)', \
+    osgi.identity;filter:='(osgi.identity=org.apache.felix.webconsole.plugins.ds)'
