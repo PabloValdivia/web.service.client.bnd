@@ -1,13 +1,26 @@
 org.apache.servicemix.bundles:org.apache.servicemix.bundles.wsdl4j:1.6.3_1
 com.sun.xml.messaging.saaj:saaj-impl:1.5.2-b01
-
+commons-codec:commons-codec:1.14
+com.sun.xml.bind:jaxb-impl:2.3.2
 
 # update wss4j because https://issues.apache.org/jira/browse/WSS-634
-org.apache.wss4j:wss4j-ws-security-dom:2.2.4
 org.apache.wss4j:wss4j-bindings:2.2.4
 org.apache.wss4j:wss4j-policy:2.2.4
 org.apache.wss4j:wss4j-ws-security-policy-stax:2.2.4
 org.apache.wss4j:wss4j-ws-security-stax:2.2.4
+org.apache.wss4j:wss4j-ws-security-common:2.2.4
+# at moment code setting for isSAAJ14 at org.apache.wss4j.dom.util.WSSecurityUtil isn't well for Osgi it allways false on jdk-11, so so make issue same like https://issues.apache.org/jira/browse/WSS-634 
+# it work with jdk-9 or pure java application because WSSecurityUtil can see com.sun.xml.messaging.saaj.soap  
+# so i repack wss4j-ws-security-dom, add import package to com.sun.xml.messaging.saaj.soap 
+# org.apache.wss4j:wss4j-ws-security-dom:2.2.4
+
+# use 2.1.2 also make issue same https://issues.apache.org/jira/browse/WSS-634 when call service.getWSHttpBindingXXXServices
+org.apache.santuario:xmlsec:2.1.4
+
+# provide org.osgi.service.http.HttpService for org.apache.cxf.cxf-rt-transports-http, in case run with equinox already exists on frameword bundle org.eclipse.osgi.services
+# when org.apache.cxf.cxf-rt-transports-http isn't active also rise issue same https://issues.apache.org/jira/browse/WSS-634 when call port.getStatus (service.function)
+# dependency on HTTPTransportActivator
+org.apache.felix:org.apache.felix.http.api:2.3.2
 
 # OSGi R7
 
