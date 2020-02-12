@@ -6,9 +6,16 @@ com.sun.xml.bind:jaxb-impl:2.3.2
 # update wss4j because https://issues.apache.org/jira/browse/WSS-634
 org.apache.wss4j:wss4j-bindings:2.2.4
 org.apache.wss4j:wss4j-policy:2.2.4
+org.apache.wss4j:wss4j-policy:jar:sources:2.2.4
 org.apache.wss4j:wss4j-ws-security-policy-stax:2.2.4
 org.apache.wss4j:wss4j-ws-security-stax:2.2.4
 org.apache.wss4j:wss4j-ws-security-common:2.2.4
+
+# org.apache.ws.security:wss4j:1.6.19 is official bundle but manifest import package javax.xml.crypto with version special to [1.5,2) javax.xml.crypto;version="[1.5,2)"
+# javax.xml.crypto and sub package is provide by jdk-11 without version. so wss4j is fail on resolve. then use org.apache.servicemix.bundles:org.apache.servicemix.bundles.wss4j
+org.apache.servicemix.bundles:org.apache.servicemix.bundles.wss4j:1.6.19_1
+# update: don't need org.apache.servicemix.bundles:org.apache.servicemix.bundles.wss4j, class is included on wss4j-ws-security-dom (with rename package)
+
 # at moment code setting for isSAAJ14 at org.apache.wss4j.dom.util.WSSecurityUtil isn't well for Osgi it allways false on jdk-11, so so make issue same like https://issues.apache.org/jira/browse/WSS-634 
 # it work with jdk-9 or pure java application because WSSecurityUtil can see com.sun.xml.messaging.saaj.soap  
 # so i repack wss4j-ws-security-dom, add import package to com.sun.xml.messaging.saaj.soap 
