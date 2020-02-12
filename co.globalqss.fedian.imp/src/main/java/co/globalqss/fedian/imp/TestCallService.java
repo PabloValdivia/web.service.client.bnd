@@ -10,6 +10,7 @@ import javax.xml.ws.WebServiceFeature;
 import javax.xml.ws.soap.AddressingFeature;
 
 import org.apache.cxf.endpoint.Client;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.spi.ProviderImpl;
 import org.apache.cxf.ws.addressing.AddressingProperties;
@@ -75,7 +76,12 @@ public class TestCallService implements CallService{
 	
 			// secure policy can parse form 
 			WebServiceFeature address = new AddressingFeature(true, true, AddressingFeature.Responses.ANONYMOUS);
-			port = service.getWSHttpBindingIWcfDianCustomerServices(address);
+			
+			// log request https://cxf.apache.org/docs/message-logging.html
+			LoggingFeature logRequestFeature = new LoggingFeature();
+			logRequestFeature.setPrettyLogging(true);
+					
+			port = service.getWSHttpBindingIWcfDianCustomerServices(address, logRequestFeature);
 
 
 			Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
