@@ -27,7 +27,7 @@ org.apache.santuario:xmlsec:2.1.4
 # provide org.osgi.service.http.HttpService for org.apache.cxf.cxf-rt-transports-http, in case run with equinox already exists on frameword bundle org.eclipse.osgi.services
 # when org.apache.cxf.cxf-rt-transports-http isn't active also rise issue same https://issues.apache.org/jira/browse/WSS-634 when call port.getStatus (service.function)
 # dependency on HTTPTransportActivator
-org.apache.felix:org.apache.felix.http.api:2.3.2
+org.apache.felix:org.apache.felix.http.api:3.0.0
 
 # OSGi R7
 

@@ -173,7 +173,7 @@ public class TestCallService implements CallService{
 		    
 		    // TODO:at moment ever has org.apache.felix.http.api, HTTPTransportActivator don wire to package org.osgi.service.http.HttpService, so it can't load
 			// temp disable http.transport for test, fix dependency later
-			System.setProperty("org.apache.cxf.osgi.http.transport.disable", "true");
+			//System.setProperty("org.apache.cxf.osgi.http.transport.disable", "true");
 			
 			/*#########################
 			* all properties for control wss4j https://ws.apache.org/wss4j/config.html

@@ -45,6 +45,14 @@
 		readOnly=true; \
 		name="Jakarta"
 
+-plugin.42.asm: \
+	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
+		snapshotUrls=https://oss.sonatype.org/content/repositories/osgi/; \
+		releaseUrls=https://repo.maven.apache.org/maven2/; \
+		query="q=g:%22org.ow2.asm%22+AND+v:%227.3.1%22"; \
+		readOnly=true; \
+		name="asm"
+		
 -runblacklist.enroute: \
     osgi.identity;filter:='(osgi.identity=osgi.enroute.base.api)', \
     osgi.identity;filter:='(osgi.identity=osgi.cmpn)', \
