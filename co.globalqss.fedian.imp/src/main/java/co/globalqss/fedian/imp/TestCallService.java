@@ -19,7 +19,6 @@ import org.apache.felix.service.command.annotations.GogoCommand;
 import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.Merlin;
 import org.apache.wss4j.dom.WSConstants;
-import org.apache.wss4j.policy.SPConstants;
 import org.datacontract.schemas._2004._07.dianresponse.DianResponse;
 import org.osgi.service.component.annotations.Component;
 
@@ -136,12 +135,17 @@ public class TestCallService implements CallService{
 		     * http://ws.apache.org/wss4j/config.html
 		     * http://ws.apache.org/wss4j/topics.html#Crypto_Interface
 		     */
-		    Properties cerProperties = new Properties() {{
+		    Properties cerProperties = new Properties() {/**
+				 * 
+				 */
+				private static final long serialVersionUID = 1L;
+
+			{
                 put("org.apache.ws.security.crypto.provider", "org.apache.ws.security.components.crypto.Merlin");
                 put(Merlin.PREFIX + Merlin.KEYSTORE_TYPE, "PKCS12");// JKS is default format on jdk until jdk8, from jdk9 then default is PKCS12 (our case if PKCS12)
                 // put(Merlin.PREFIX + Merlin.KEYSTORE_ALIAS, " quality systems  solutions qss ltda"); our keystore hasn't alias
                 //TODO: relative path
-                put(Merlin.PREFIX + Merlin.KEYSTORE_FILE, "/mnt/data/1Dev/project/nakarat/202001/fromCarlos/ToHiep/Certificado.pfx");
+                put(Merlin.PREFIX + Merlin.KEYSTORE_FILE, "Certificado.pfx");
                 
                 //encrypted keystore password 
                 //This holds a reference to a PasswordEncryptor instance, which is used to encrypt or decrypt passwords in the Merlin Crypto implementation (or any custom Crypto implementations). By default, WSS4J uses the JasyptPasswordEncryptor, which must be instantiated with a master password to use to decrypt keystore passwords in the Merlin Crypto properties file. This master password is obtained via the CallbackHandler defined via PW_CALLBACK_CLASS or PW_CALLBACK_REF. The encrypted passwords must be stored in the format "ENC(encoded encrypted password)".
@@ -185,6 +189,9 @@ public class TestCallService implements CallService{
 			 */
 			client.getRequestContext().put(ConfigurationConstants.SIG_KEY_ID, WSConstants.BST_DIRECT_REFERENCE); 
 
+			client.getRequestContext().put(ConfigurationConstants.ACTION, ConfigurationConstants.SIGNATURE + " " + ConfigurationConstants.TIMESTAMP);
+			client.getRequestContext().put(ConfigurationConstants.TIMESTAMP_PRECISION, true);
+			client.getRequestContext().put(ConfigurationConstants.TTL_TIMESTAMP, "60000");
 			/*
 			 * Set signature algorithm
 			 * key get from SecurityConstants, value get from SPConstants

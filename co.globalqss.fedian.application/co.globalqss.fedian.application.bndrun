@@ -1,3 +1,5 @@
+-includeresource : ${.}/logging.properties ${.}/Certificado.pfx
+-includeresource : ${.}/Certificado.pfx
 -runfw: org.apache.felix.framework;version='[6.0.3,6.0.3]'
 -runee: JavaSE-11
 -runrequires: \
@@ -77,3 +79,4 @@
 	org.osgi.util.promise;version='[1.1.1,1.1.2)',\
 	org.slf4j.api;version='[1.7.10,1.7.11)',\
 	stax2-api;version='[4.1.0,4.1.1)'
+-runproperties: java.util.logging.config.file=logging.properties
