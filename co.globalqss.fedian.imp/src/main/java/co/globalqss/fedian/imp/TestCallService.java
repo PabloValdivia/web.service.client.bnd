@@ -75,13 +75,13 @@ public class TestCallService implements CallService{
 			Client client = ClientProxy.getClient(winrm);*/
 	
 			// secure policy can parse form 
-			WebServiceFeature address = new AddressingFeature(true, true, AddressingFeature.Responses.ANONYMOUS);
+			// WebServiceFeature address = new AddressingFeature(true, true, AddressingFeature.Responses.ANONYMOUS);
 			
 			// log request https://cxf.apache.org/docs/message-logging.html
 			LoggingFeature logRequestFeature = new LoggingFeature();
 			logRequestFeature.setPrettyLogging(true);
 					
-			port = service.getWSHttpBindingIWcfDianCustomerServices(address, logRequestFeature);
+			port = service.getWSHttpBindingIWcfDianCustomerServices(logRequestFeature);
 
 
 			Map<String, Object> ctx = ((BindingProvider) port).getRequestContext();
