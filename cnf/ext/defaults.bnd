@@ -27,7 +27,7 @@
 -plugin.31.Minip2: \
 	aQute.bnd.repository.p2.provider.P2Repository; \
    	name = "Minip2"; \
-  	url = "file:/mnt/data/1Dev/project/vn.hsv.git.build/idempiere/org.idempiere.maven.to.p2/org.idempiere.minip2/target/repository"
+  	url = "https://raw.githubusercontent.com/hieplq/idempiere.artifact/cxf-3.3.1/m2p/org.idempiere.minip2"
 
 -plugin.40.cxf: \
 	aQute.bnd.repository.maven.pom.provider.BndPomRepository; \
