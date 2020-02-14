@@ -7,15 +7,10 @@ import java.util.Properties;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
-import org.apache.cxf.endpoint.Client;
 import org.apache.cxf.ext.logging.LoggingFeature;
-import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.spi.ProviderImpl;
-import org.apache.cxf.ws.addressing.AddressingProperties;
-import org.apache.cxf.ws.addressing.AttributedURIType;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.felix.service.command.annotations.GogoCommand;
-import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.Merlin;
 import org.apache.wss4j.policy.SPConstants;
 import org.osgi.framework.FrameworkUtil;
@@ -77,7 +72,6 @@ public class TestCallService implements CallService{
 			// log request https://cxf.apache.org/docs/message-logging.html
 			LoggingFeature logRequestFeature = new LoggingFeature();
 			logRequestFeature.setPrettyLogging(true);
-					
 			port = service.getWSHttpBindingIWcfDianCustomerServices(logRequestFeature);
 
 
@@ -111,7 +105,7 @@ public class TestCallService implements CallService{
 				maps.setFaultTo(ref);
 				((BindingProvider)port).getRequestContext().put("javax.xml.ws.addressing.context", maps);
 			 */
-			AddressingProperties maps = new AddressingProperties();
+			/*AddressingProperties maps = new AddressingProperties();
 			AttributedURIType action = new AttributedURIType();
 			action.setValue("http://wcf.dian.colombia/IWcfDianCustomerServices/GetStatus");
 			maps.setAction(action);
@@ -123,7 +117,7 @@ public class TestCallService implements CallService{
 			
 			maps.setRequired(true);
 
-			ctx.put("javax.xml.ws.addressing.context", maps);
+			ctx.put("javax.xml.ws.addressing.context", maps);*/
 			
 			/******** http://cxf.apache.org/docs/ws-securitypolicy.html
 			 *        http://cxf.apache.org/docs/security-configuration.html
@@ -133,7 +127,7 @@ public class TestCallService implements CallService{
 			 * Security policy
 			 * 
 			 */
-		    Client client = ClientProxy.getClient(port);
+		    // Client client = ClientProxy.getClient(port);
 		    /*
 		     * http://ws.apache.org/wss4j/config.html
 		     * http://ws.apache.org/wss4j/topics.html#Crypto_Interface
@@ -161,9 +155,9 @@ public class TestCallService implements CallService{
                 // put(Merlin.PREFIX + Merlin.KEYSTORE_PRIVATE_PASSWORD, Merlin.ENCRYPTED_PASSWORD_PREFIX + "z82XxI7fV9r4j/rZwUk6NMJcVIgWpNLRi/awQX9RsF0=" + Merlin.ENCRYPTED_PASSWORD_SUFFIX);
             }};
 		    // TODO check to see it's same port.getRequestContext();
-		    client.getRequestContext().put(SecurityConstants.SIGNATURE_PROPERTIES, cerProperties);
+            ctx.put(SecurityConstants.SIGNATURE_PROPERTIES, cerProperties);
 		    //client.getRequestContext().put(SecurityConstants.ENCRYPT_PROPERTIES, cerProperties);
-		    client.getRequestContext().put(SecurityConstants.CALLBACK_HANDLER, CerPasswordCallback.class.getName());
+            ctx.put(SecurityConstants.CALLBACK_HANDLER, CerPasswordCallback.class.getName());
 		    
 		    /*
 		     * Setting alias name
@@ -172,7 +166,7 @@ public class TestCallService implements CallService{
 		     * 
 		     * our case has only one cer inside keystore, in case we don't set this value, it's ok, because Merlin engine call crypto.getDefaultX509Identifier() to get it
 		     */
-		    client.getRequestContext().put(SecurityConstants.SIGNATURE_USERNAME, " quality systems  solutions qss ltda");
+            ctx.put(SecurityConstants.SIGNATURE_USERNAME, " quality systems  solutions qss ltda");
 		    
 		    // TODO:at moment ever has org.apache.felix.http.api, HTTPTransportActivator don wire to package org.osgi.service.http.HttpService, so it can't load
 			// temp disable http.transport for test, fix dependency later
@@ -204,9 +198,9 @@ public class TestCallService implements CallService{
 		    */ 
 			// client.getRequestContext().put(ConfigurationConstants.SIG_KEY_ID, WSConstants. BST_DIRECT_REFERENCE); 
 
-			client.getRequestContext().put(ConfigurationConstants.ACTION, ConfigurationConstants.SIGNATURE + " " + ConfigurationConstants.TIMESTAMP);
-			client.getRequestContext().put(ConfigurationConstants.TIMESTAMP_PRECISION, true);
-			client.getRequestContext().put(ConfigurationConstants.TTL_TIMESTAMP, "60000");
+            //ctx.put(ConfigurationConstants.ACTION, ConfigurationConstants.SIGNATURE + " " + ConfigurationConstants.TIMESTAMP);
+            //ctx.put(ConfigurationConstants.TIMESTAMP_PRECISION, true);
+            //ctx.put(ConfigurationConstants.TTL_TIMESTAMP, "60000");
 			/*
 			 * Set signature algorithm
 			 * key get from SecurityConstants, value get from SPConstants
@@ -219,7 +213,7 @@ public class TestCallService implements CallService{
 			 * so can't modify wsdl for this issue.
 			 * luckily, we can override asymmetric signature algorithm value by setting request context
 			 */
-			client.getRequestContext().put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM, SPConstants.RSA_SHA256);
+            ctx.put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM, SPConstants.RSA_SHA256);
 			
 			/**
 			 * 	ClientImpl.doInvoke
