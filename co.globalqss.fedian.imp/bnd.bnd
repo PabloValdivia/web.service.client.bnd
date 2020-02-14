@@ -1,3 +1,4 @@
+-includeresource.resources: -src/main/resources
 -buildpath: \
 	org.osgi.service.component.annotations,\
 	co.client.ws.soap.fe.dian;version=latest,\
@@ -13,7 +14,9 @@
 	org.apache.cxf.cxf-rt-security,\
 	org.apache.wss4j.wss4j-ws-security-common,\
 	org.apache.wss4j.wss4j-ws-security-dom,\
-	org.apache.wss4j.wss4j-policy
+	org.apache.wss4j.wss4j-policy,\
+	org.apache.cxf.cxf-rt-features-logging,\
+	org.osgi.framework
 Import-Package: \
 	org.apache.cxf.transport.http,\
 	com.sun.xml.messaging.saaj.soap,\

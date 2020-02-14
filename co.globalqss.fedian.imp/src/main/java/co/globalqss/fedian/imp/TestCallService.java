@@ -6,11 +6,9 @@ import java.util.Properties;
 
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
-import javax.xml.ws.WebServiceFeature;
-import javax.xml.ws.soap.AddressingFeature;
 
 import org.apache.cxf.endpoint.Client;
-import org.apache.cxf.feature.LoggingFeature;
+import org.apache.cxf.ext.logging.LoggingFeature;
 import org.apache.cxf.frontend.ClientProxy;
 import org.apache.cxf.jaxws.spi.ProviderImpl;
 import org.apache.cxf.ws.addressing.AddressingProperties;
@@ -19,14 +17,13 @@ import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.felix.service.command.annotations.GogoCommand;
 import org.apache.wss4j.common.ConfigurationConstants;
 import org.apache.wss4j.common.crypto.Merlin;
-import org.apache.wss4j.dom.WSConstants;
-import org.datacontract.schemas._2004._07.dianresponse.DianResponse;
+import org.apache.wss4j.policy.SPConstants;
+import org.osgi.framework.FrameworkUtil;
 import org.osgi.service.component.annotations.Component;
 
 import co.globalqss.fedian.api.CallService;
 import colombia.dian.wcf.IWcfDianCustomerServices;
 import colombia.dian.wcf.WcfDianCustomerServices;
-
 /**
  * TODO: update cxf to 3.3.2 for 	https://issues.apache.org/jira/browse/CXF-8010 
  * 									http://coheigea.blogspot.com/2019/04/performance-gain-for-web-service.html
@@ -42,7 +39,6 @@ public class TestCallService implements CallService{
 		encrytedPassword = System.getProperty("JasyptPasswordEncryptor.encrytedPassword.keystore");
 	}
 	
-	
 	@Override
 	public String getStatus() {
 		ClassLoader currentThreadClassLoader = null;
@@ -52,11 +48,12 @@ public class TestCallService implements CallService{
 			System.setProperty("javax.xml.ws.spi.Provider", "org.apache.cxf.jaxws.spi.ProviderImpl");
 			System.setProperty("javax.xml.bind.JAXBContextFactory", "com.sun.xml.bind.v2.JAXBContextFactory");
 			
-			String wsdlLocation = "https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc?wsdl";
+			//String wsdlLocation = "https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc?wsdl";
+		    URL url = FrameworkUtil.getBundle(this.getClass()).getEntry("WcfDianCustomerServices.xml");		
+		    ClassLoader.getSystemClassLoader().getResource("WcfDianCustomerServices.xml");
 			String recepcionComprobantesQname = "http://wcf.dian.colombia";
 			String recepcionComprobantesService = "WcfDianCustomerServices";
 			QName qname = new QName(recepcionComprobantesQname, recepcionComprobantesService);
-			URL url = new URL(wsdlLocation);
 			System.out.println(ProviderImpl.class.getClassLoader());
 			currentThreadClassLoader =  Thread.currentThread().getContextClassLoader();
 			Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
@@ -193,7 +190,19 @@ public class TestCallService implements CallService{
 			 * map with http://coheigea.blogspot.com/2013/03/signature-and-encryption-key.html
 			 * can see Key identify is DirectReference 
 			 */
-			client.getRequestContext().put(ConfigurationConstants.SIG_KEY_ID, WSConstants.BST_DIRECT_REFERENCE); 
+		    /* 
+		     * update: security policy passing wsdl and and recognize this value as WSConstants.THUMBPRINT_IDENTIFIER
+		     *	
+		     *	xml tag <wsp:Policy><wsp:ExactlyOne><wsp:All><sp:EndorsingSupportingTokens><wsp:Policy><sp:X509Token><wsp:Policy><sp:RequireThumbprintReference/>
+		     *	code:AbstractBindingBuilder.setKeyIdentifierType
+		     *  
+		     *  setting ConfigurationConstants.SIG_KEY_ID on request context don't force reset value.
+		     *  
+		     *  solution:offline wsdl and modify it to parsing can setting value like soupUI
+		     *  	download and save to /co.globalqss.fedian.imp/src/main/resources/WcfDianCustomerServices.xml
+		     *  	delete tag <wsp:Policy><wsp:ExactlyOne><wsp:All><sp:EndorsingSupportingTokens><wsp:Policy><sp:X509Token><wsp:Policy><sp:RequireThumbprintReference/>
+		    */ 
+			// client.getRequestContext().put(ConfigurationConstants.SIG_KEY_ID, WSConstants. BST_DIRECT_REFERENCE); 
 
 			client.getRequestContext().put(ConfigurationConstants.ACTION, ConfigurationConstants.SIGNATURE + " " + ConfigurationConstants.TIMESTAMP);
 			client.getRequestContext().put(ConfigurationConstants.TIMESTAMP_PRECISION, true);
@@ -201,8 +210,16 @@ public class TestCallService implements CallService{
 			/*
 			 * Set signature algorithm
 			 * key get from SecurityConstants, value get from SPConstants
+			 * 
+			 * Algorithm suite setting on wsdl by tab <wsp:Policy><wsp:ExactlyOne><wsp:All><sp:TransportBinding><<wsp:Policy><sp:AlgorithmSuite><wsp:Policy><sp:Basic256Sha256Rsa15/>
+			 * the suite Basic256Sha256Rsa15 declare on org.apache.wss4j.policy.model.AlgorithmSuite.ALGORITHM_SUITE_TYPES
+			 * on this suite, asymmetric signature algorithm is SHA256 = "http://www.w3.org/2001/04/xmlenc#sha256";
+			 * but actual server use asymmetric signature algorithm is RSA_SHA256 = "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256"
+			 * at the moment no predefine suite on org.apache.wss4j.policy.model.AlgorithmSuite.ALGORITHM_SUITE_TYPES use RSA_SHA256
+			 * so can't modify wsdl for this issue.
+			 * luckily, we can override asymmetric signature algorithm value by setting request context
 			 */
-			//client.getRequestContext().put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM, SPConstants.)
+			client.getRequestContext().put(SecurityConstants.ASYMMETRIC_SIGNATURE_ALGORITHM, SPConstants.RSA_SHA256);
 			
 			/**
 			 * 	ClientImpl.doInvoke
@@ -240,8 +257,7 @@ public class TestCallService implements CallService{
 			 * 				xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd
 			 * 		init WSSConfig with default configuration (properties, object, provider,..) to handle security policy
 			 */
-			DianResponse status = port.getStatus("bc84a90ee7ae3bcd05961195cb5391dbce7271016978f70648c530ef9b6f87b723fce42167c774b958382d3423d28fc2");
-			
+			port.getStatus("bc84a90ee7ae3bcd05961195cb5391dbce7271016978f70648c530ef9b6f87b723fce42167c774b958382d3423d28fc2");
 			return "ok";
 			
 		} catch (Exception e) {
