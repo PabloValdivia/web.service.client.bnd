@@ -22,8 +22,7 @@
 	bnd.identity;version='1.5.2.b01';id='com.sun.xml.messaging.saaj.impl',\
 	bnd.identity;id='org.apache.felix.http.api',\
 	bnd.identity;version='2.2.4';id='org.apache.wss4j.wss4j-ws-security-dom',\
-	bnd.identity;version='7.3.1';id='org.objectweb.asm',\
-	bnd.identity;id='org.apache.cxf.cxf-rt-features-logging'
+	bnd.identity;version='7.3.1';id='org.objectweb.asm'
 -runbundles: \
 	co.client.ws.soap.fe.dian;version=snapshot,\
 	co.globalqss.fedian.api;version=snapshot,\
@@ -78,7 +77,6 @@
 	org.objectweb.asm;version='[7.3.1,7.3.2)',\
 	org.apache.felix.http.api;version='[3.0.0,3.0.1)',\
 	org.apache.felix.http.servlet-api;version='[1.1.2,1.1.3)',\
-	org.apache.cxf.cxf-rt-features-logging;version='[3.3.1,3.3.2)',\
 	org.apache.felix.scr;version='[2.1.16,2.1.17)',\
 	org.osgi.util.function;version='[1.1.0,1.1.1)',\
 	org.osgi.util.promise;version='[1.1.1,1.1.2)'

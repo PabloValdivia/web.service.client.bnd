@@ -7,7 +7,7 @@ import java.util.Properties;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
-import org.apache.cxf.ext.logging.LoggingFeature;
+import org.apache.cxf.feature.LoggingFeature;
 import org.apache.cxf.jaxws.spi.ProviderImpl;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.felix.service.command.annotations.GogoCommand;
