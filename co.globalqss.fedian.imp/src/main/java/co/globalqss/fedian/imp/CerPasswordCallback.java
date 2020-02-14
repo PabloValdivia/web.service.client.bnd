@@ -11,7 +11,12 @@ import org.apache.wss4j.common.crypto.PasswordEncryptor;
 import org.apache.wss4j.common.ext.WSPasswordCallback;
 
 public class CerPasswordCallback implements CallbackHandler{
-
+	public static String encrytedPassword;
+	
+	static {
+		encrytedPassword = System.getProperty("JasyptPasswordEncryptor.encrytedPassword.keystore");
+	}
+	
 	@Override
 	public void handle(Callback[] callbacks) throws IOException, UnsupportedCallbackException {
 		for (int i = 0; i < callbacks.length; i++) {
@@ -33,10 +38,10 @@ public class CerPasswordCallback implements CallbackHandler{
 				
 				// call JasyptPasswordEncryptor manual
 				PasswordEncryptor passwordEncryptor = new JasyptPasswordEncryptor(this);
-				pc.setPassword(passwordEncryptor.decrypt(TestCallService.encrytedPassword));
+				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.encrytedPassword));
 			}else {
 				PasswordEncryptor passwordEncryptor = new JasyptPasswordEncryptor(this);
-				pc.setPassword(passwordEncryptor.decrypt(TestCallService.encrytedPassword));
+				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.encrytedPassword));
 			}
 		}
 		

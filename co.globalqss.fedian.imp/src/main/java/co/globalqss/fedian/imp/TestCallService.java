@@ -4,11 +4,9 @@ import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
 
-import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 
 import org.apache.cxf.feature.LoggingFeature;
-import org.apache.cxf.jaxws.spi.ProviderImpl;
 import org.apache.cxf.ws.security.SecurityConstants;
 import org.apache.felix.service.command.annotations.GogoCommand;
 import org.apache.wss4j.common.crypto.Merlin;
@@ -28,11 +26,6 @@ import colombia.dian.wcf.WcfDianCustomerServices;
 @GogoCommand(scope = "CallService", function = "getStatus")
 @Component
 public class TestCallService implements CallService{
-	public static String encrytedPassword;
-	
-	static {
-		encrytedPassword = System.getProperty("JasyptPasswordEncryptor.encrytedPassword.keystore");
-	}
 	
 	@Override
 	public String getStatus() {
@@ -45,14 +38,10 @@ public class TestCallService implements CallService{
 			
 			//String wsdlLocation = "https://vpfe-hab.dian.gov.co/WcfDianCustomerServices.svc?wsdl";
 		    URL url = FrameworkUtil.getBundle(this.getClass()).getEntry("WcfDianCustomerServices.xml");		
-		    ClassLoader.getSystemClassLoader().getResource("WcfDianCustomerServices.xml");
-			String recepcionComprobantesQname = "http://wcf.dian.colombia";
-			String recepcionComprobantesService = "WcfDianCustomerServices";
-			QName qname = new QName(recepcionComprobantesQname, recepcionComprobantesService);
-			System.out.println(ProviderImpl.class.getClassLoader());
+		    
 			currentThreadClassLoader =  Thread.currentThread().getContextClassLoader();
 			Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
-			WcfDianCustomerServices service = new WcfDianCustomerServices (url, qname);
+			WcfDianCustomerServices service = new WcfDianCustomerServices (url);
 			
 			IWcfDianCustomerServices port = null;
 			
@@ -146,7 +135,7 @@ public class TestCallService implements CallService{
                 
                 //encrypted keystore password 
                 //This holds a reference to a PasswordEncryptor instance, which is used to encrypt or decrypt passwords in the Merlin Crypto implementation (or any custom Crypto implementations). By default, WSS4J uses the JasyptPasswordEncryptor, which must be instantiated with a master password to use to decrypt keystore passwords in the Merlin Crypto properties file. This master password is obtained via the CallbackHandler defined via PW_CALLBACK_CLASS or PW_CALLBACK_REF. The encrypted passwords must be stored in the format "ENC(encoded encrypted password)".
-                put(Merlin.PREFIX + Merlin.KEYSTORE_PASSWORD, Merlin.ENCRYPTED_PASSWORD_PREFIX + TestCallService.encrytedPassword + Merlin.ENCRYPTED_PASSWORD_SUFFIX);
+                put(Merlin.PREFIX + Merlin.KEYSTORE_PASSWORD, Merlin.ENCRYPTED_PASSWORD_PREFIX + CerPasswordCallback.encrytedPassword + Merlin.ENCRYPTED_PASSWORD_SUFFIX);
                  
                 // password to get private key for signature.
                 // by Merlin we use this method to use PasswordEncryptor method. on our case password same keystore password.

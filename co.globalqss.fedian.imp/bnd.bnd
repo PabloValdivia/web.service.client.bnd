@@ -21,4 +21,5 @@ Import-Package: \
 	com.sun.xml.messaging.saaj.soap,\
 	com.sun.xml.bind.v2,\
 	org.osgi.service.http,\
+	org.apache.cxf.jaxws.spi,\
 	*
