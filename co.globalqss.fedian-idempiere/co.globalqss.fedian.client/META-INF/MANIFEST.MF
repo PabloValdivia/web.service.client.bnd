@@ -1,0 +1,13 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fedian Client
+Bundle-SymbolicName: co.globalqss.fedian.client
+Bundle-Version: 7.1.0.qualifier
+Automatic-Module-Name: co.globalqss.fedian.client
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: co.globalqss.fedian.client.api,
+ org.osgi.service.component.annotations;version="1.3.0"
+Service-Component: OSGI-INF/co.globalqss.fedian.client.ServiceClient.xml
+Bundle-ActivationPolicy: lazy
+Require-Bundle: co.client.ws.soap.fe.dian
+Bundle-ClassPath: .

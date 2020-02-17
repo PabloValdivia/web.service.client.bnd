@@ -3,6 +3,7 @@ package co.globalqss.fedian.imp;
 import java.net.URL;
 import java.util.Map;
 import java.util.Properties;
+import java.util.logging.Level;
 
 import javax.xml.ws.BindingProvider;
 
@@ -37,6 +38,24 @@ public class ServiceClient implements CallService {
 			//String recepcionComprobantesService = "WcfDianCustomerServices";
 			//QName qname = new QName(recepcionComprobantesQname, recepcionComprobantesService);
 			
+			/**
+			 * 1. when run on this environment ExtensionManagerBus is used
+			 * but when run on idempiere environment, SpringBus is used instead of (debug constructor of SpringBus to see)
+			 * 	SpringBus manage a ClassLoader extension. see setExtension(applicationContext.getClassLoader(), ClassLoader.class) on SpringBus.setApplicationContext
+			 * 	this extension point to ClassLoader of bundle org.idempiere.webservice (by Current Thread Classloader on com.trekglobal.ws.ContextLoaderListener)
+			 * 	
+			 * 2. when call service.getWSHttpBindingIWcfDianCustomerServices, it call to JaxWsProxyFactoryBean.create
+			 * 	at that point, it change ThreaadClassLoad to getBus().getExtension(ClassLoader.class), is value set on 1, is class load of bundle org.idempiere.webservice 
+			 * 	
+			 * 	
+			 *  some point from org.idempiere.webservice environment
+			 *  	+ on web.xml, context parameter and listener init cfx framework
+			 *  	+ see com.trekglobal.ws.ContextLoaderListener
+			 *  	+ /META-INF/cxf/services.xml
+			 *  
+			 *  org.compiere.Adempiere line CLogMgt.setLevel(Ini.getProperty(Ini.P_TRACELEVEL));
+			 *  will overrider level set from log.properties file
+			 */
 			currentThreadClassLoader =  Thread.currentThread().getContextClassLoader();
 			Thread.currentThread().setContextClassLoader(this.getClass().getClassLoader());
 			

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" immediate="true" name="co.globalqss.fedian.client.ServiceClient">
+   <property name="osgi.command.scope" value="service"/>
+   <property name="osgi.command.function" value="getStatus"/>
+   <service>
+      <provide interface="co.globalqss.fedian.client.ServiceClient"/>
+   </service>
+   <implementation class="co.globalqss.fedian.client.ServiceClient"/>
+</scr:component>
