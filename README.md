@@ -50,5 +50,10 @@ user cxf to call service with security policy
 1. CerPasswordCallback
     1. when run by standalone mode, class loader isn't change, so code inside cxf can instance CerPasswordCallback, so just pass class name to SecurityConstants.CALLBACK_HANDLER
     1. when run inside idempiere, class loader change to "org.idempiere.webservice", so need to instance CerPasswordCallback outside and pass instance reference to SecurityConstants.CALLBACK_HANDLER
-
-  
+    
+# project inside web.service.client.bnd/co.globalqss.fedian-idempiere
+1. co.client.ws.soap.fe.dian is code gen from wsdl. can re-generate by [web.service.client.bnd]/co.client.ws.soap.fe.dian/pom.xml
+2. co.globalqss.fedian.client.api is commond code for call web service
+3. co.globalqss.fedian.client is a osgi service function to demo call web service from osgi console
+4. co.globalqss.fedian.client.process is a idempiere process to demo call web service from idempiere webui
+5. org.opensaml.saml.common.fake give empty package relate opensaml, to cut off requirement of cxf library
