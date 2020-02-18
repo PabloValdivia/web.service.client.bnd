@@ -26,19 +26,32 @@ user cxf to call service with security policy
 1. import all maven project from [web.service.client.bnd]/co.globalqss.fedian-idempiere
 1. include feature co.globalqss.fedian.client-feature into org.adempiere.base-feature
 1. open org.idempiere.p2.targetplatform/org.idempiere.p2.targetplatform.target:
-    1. change *org.idempiere.webservice.client-* to https://raw.githubusercontent.com/hieplq/idempiere.artifact/cxf-3.3.1-service.client/m2p/org.idempiere.webservice.client
-    1. rechoose all bundle on update repository
-    1. reload all repository
+    1. add new software site with url https://raw.githubusercontent.com/hieplq/idempiere.artifact/cxf-3.3.1-service.client/m2p/org.idempiere.webservice.client
     1. reload target platform
-1. bundle org.idempiere.webservices add more import package "com.sun.xml.messaging.saaj.soap"
 1. set trace level to "info" to output request/response log
 1. open "org.adempiere.server-feature/server.product" 
-    1. on launching tab at "VM agruments" append **-DJasyptPasswordEncryptor.master.password="Your Master Password" -DJasyptPasswordEncryptor.encrytedPassword.keystore="Your Encryped Password"**
-    1. on overview tag, click "Launch an eclipse application on debug mode" to update set of new plugins and "VM agruments" to server.product launching
+    1. on overview tag, click "Launch an eclipse application on debug mode" to update set of new plugins to server.product launching
 1. run test:
+    1. at console type tool:setMasterPass 'your master password'
+    1. at console type tool:setEncryptedKeystorePass 'your encrypt'
+    1. at console type instead of tool:setEncryptedKeystorePass you can use tool:setPlanKeystorePass 'your plain keystore password'
     1. case 1: at console type service:getStatus to test. confirm result at console log
-    2. case 2: open idempiere web ui, run process "Translation Doc Sync". confirm result at console log
-    
+    1. case 2: open idempiere web ui, run process "Translation Doc Sync". confirm result at console log
+
+# for build with command line. do follow step
+1. download file https://raw.githubusercontent.com/hieplq/web.service.client.bnd/master/setupEnv.sh to a folder
+1. run `sh setupEnv.sh`
+1. wait for build after that you can run server by 
+    1. cd idempiere/org.idempiere.p2/target/products/org.adempiere.server.product/linux/gtk/x86_64
+    1. ./console-setup-alt.sh
+    1. ./idempiere-server.sh
+1. open other terminal
+    1. telnet localhost 12612
+    1. tool:setMasterPass 'your master password'
+    1. tool:setEncryptedKeystorePass 'your encrypt' or tool:setPlanKeystorePass 'your plain keystore password'
+    1. service:getStatus
+
+
 # Note
 ## What's difference when run at stanalone and inside idempiere
 1. bus manage extension
