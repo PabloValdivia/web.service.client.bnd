@@ -47,7 +47,7 @@ public class ServiceClientUtil {
 			// it's org.idempiere.service class load
 			String cerPath = "bundleentry://" + FrameworkUtil.getBundle(ServiceClientUtil.class).getBundleId() + "/Certificado.pfx";
 			cerProperties.put(Merlin.PREFIX + Merlin.KEYSTORE_FILE, cerPath);
-			cerProperties.put(Merlin.PREFIX + Merlin.KEYSTORE_PASSWORD, Merlin.ENCRYPTED_PASSWORD_PREFIX + CerPasswordCallback.encrytedPassword + Merlin.ENCRYPTED_PASSWORD_SUFFIX);
+			cerProperties.put(Merlin.PREFIX + Merlin.KEYSTORE_PASSWORD, Merlin.ENCRYPTED_PASSWORD_PREFIX + CerPasswordCallback.getEncrytedPassword() + Merlin.ENCRYPTED_PASSWORD_SUFFIX);
 			
 			// on idempiere Bus manage is SpringBus, so cxf class will load by this ClassLoad getBus().getExtension(ClassLoader.class)
 			// it's org.idempiere.service class load

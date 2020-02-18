@@ -8,6 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-11
 Bundle-ClassPath: .
 Import-Package: co.globalqss.fedian.client.api,
  org.adempiere.base,
- org.compiere.process
+ org.compiere.process,
+ org.osgi.service.component.annotations;version="1.2.0"
 Service-Component: OSGI-INF/co.globalqss.fedian.client.process.FedianClientProcessFactory.xml
 Bundle-ActivationPolicy: lazy

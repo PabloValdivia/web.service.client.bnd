@@ -11,10 +11,15 @@ import org.apache.wss4j.common.crypto.PasswordEncryptor;
 import org.apache.wss4j.common.ext.WSPasswordCallback;
 
 public class CerPasswordCallback implements CallbackHandler{
-	public static String encrytedPassword;
+	public final static String encrytedPasswordKey = "JasyptPasswordEncryptor.encrytedPassword.keystore";
+	public final static String masterPasswordKey = "JasyptPasswordEncryptor.master.password";
 	
-	static {
-		encrytedPassword = System.getProperty("JasyptPasswordEncryptor.encrytedPassword.keystore");
+	public static String getMasterPassword () {
+		return System.getProperty(CerPasswordCallback.masterPasswordKey);
+	}
+	
+	public static String getEncrytedPassword () {
+		return System.getProperty(CerPasswordCallback.encrytedPasswordKey);
 	}
 	
 	@Override
@@ -29,7 +34,7 @@ public class CerPasswordCallback implements CallbackHandler{
 				/*
 				 * set master password for JasyptPasswordEncryptor to decrypt keystore password set on Merlin.PREFIX + Merlin.KEYSTORE_PASSWORD 
 				 */
-				pc.setPassword(System.getProperty("JasyptPasswordEncryptor.master.password"));
+				pc.setPassword(CerPasswordCallback.getMasterPassword());
 			}else if (pc.getUsage() == WSPasswordCallback.SIGNATURE) {// WSPasswordCallback.SIGNATURE - SIGNATURE usage is used on the outbound side only, to get a password to get the private key of this identifier (alias) from a keystore. The CallbackHandler must set the password via the setPassword(String) method.
 				
 				// we use Merlin, so set null to use encrypted password set on properties with key Merlin.PREFIX + Merlin.KEYSTORE_PRIVATE_PASSWORD"
@@ -38,10 +43,10 @@ public class CerPasswordCallback implements CallbackHandler{
 				
 				// call JasyptPasswordEncryptor manual
 				PasswordEncryptor passwordEncryptor = new JasyptPasswordEncryptor(this);
-				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.encrytedPassword));
+				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.getEncrytedPassword()));
 			}else {
 				PasswordEncryptor passwordEncryptor = new JasyptPasswordEncryptor(this);
-				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.encrytedPassword));
+				pc.setPassword(passwordEncryptor.decrypt(CerPasswordCallback.getEncrytedPassword()));
 			}
 		}
 		

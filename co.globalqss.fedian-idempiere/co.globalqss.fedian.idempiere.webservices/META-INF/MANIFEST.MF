@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Fragment Extend org.idempiere.webservices
+Bundle-SymbolicName: co.globalqss.fedian.idempiere.webservices
+Bundle-Version: 7.1.0.qualifier
+Fragment-Host: org.idempiere.webservices;bundle-version="7.1.0"
+Automatic-Module-Name: co.globalqss.fedian.idempiere.webservices
+Bundle-RequiredExecutionEnvironment: JavaSE-11
+Import-Package: com.sun.xml.messaging.saaj.soap;version="1.5.2"

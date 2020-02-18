@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="co.globalqss.fedian.client"
+      id="co.globalqss.fedian.client.feature"
       label="Fedian Client feature"
       version="7.1.0.qualifier">
 
@@ -315,6 +315,14 @@
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="co.globalqss.fedian.idempiere.webservices"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>
