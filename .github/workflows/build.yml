@@ -19,6 +19,9 @@ jobs:
             uses: actions/setup-java@v1
             with: 
                 java-version: 11
+        -   name: Fake resource file
+            shell: bash
+            run: touch co.globalqss.fedian.application/Certificado.pfx
         -   name: Build
             shell: bash
             run: ./gradlew build
