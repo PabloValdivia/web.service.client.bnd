@@ -39,8 +39,14 @@ user cxf to call service with security policy
     1. case 2: open idempiere web ui, run process "Translation Doc Sync". confirm result at console log
 
 # for build with command line. do follow step
-1. download file https://raw.githubusercontent.com/hieplq/web.service.client.bnd/master/setupEnv.sh to a folder
-1. run `sh setupEnv.sh`
+1. download file https://raw.githubusercontent.com/hieplq/web.service.client.bnd/master/setupEnv.sh to a folder [root]
+1. clone idempiere to [root]/idempiere by run `git clone git@github.com:idempiere/idempiere.git [root]/idempiere`
+1. clone web.service.client.bnd to [root]/web.service.client.bnd git by run `clone git@github.com:hieplq/web.service.client.bnd.git`
+1. run `sh setupEnv.sh` to
+    1. append new p2 repository to org.idempiere.p2.targetplatform.target
+    1. include co.globalqss.fedian.client-feature on binary
+1. place your file keystore to [root]/web.service.client.bnd/co.globalqss.fedian-idempiere/co.globalqss.fedian.client.api/Certificado.pfx
+1. build product by run `mvn validate`
 1. wait for build after that you can run server by 
     1. cd idempiere/org.idempiere.p2/target/products/org.adempiere.server.product/linux/gtk/x86_64
     1. ./console-setup-alt.sh
