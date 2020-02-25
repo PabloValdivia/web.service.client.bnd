@@ -46,6 +46,9 @@ user cxf to call service with security policy
     1. append new p2 repository to org.idempiere.p2.targetplatform.target
     1. include co.globalqss.fedian.client-feature on binary
 1. place your file keystore to [root]/web.service.client.bnd/co.globalqss.fedian-idempiere/co.globalqss.fedian.client.api/Certificado.pfx
+1. get rid of depend parent pom from extra plugin
+    1. cd [root]/idempiere/org.idempiere.parent
+    1. mvn install
 1. build product by run `mvn validate`
 1. wait for build after that you can run server by 
     1. cd idempiere/org.idempiere.p2/target/products/org.adempiere.server.product/linux/gtk/x86_64
